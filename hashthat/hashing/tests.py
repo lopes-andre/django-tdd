@@ -8,11 +8,11 @@ class FunctionalTestCase(TestCase):
 
     def test_there_is_homepage(self):
         '''
-        Tests the home page for having the text install as it
-        does in the Django regular install page.
+        Tests the home page for having the text an specific
+        text on the page source.
         '''
         self.browser.get('http://localhost:8000')
-        self.assertIn('install', self.browser.page_source)
+        self.assertIn('Enter your text to be encoded to a hash:', self.browser.page_source)
 
     def tearDown(self):
         self.browser.quit()
