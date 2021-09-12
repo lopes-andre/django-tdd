@@ -63,15 +63,19 @@ class UnitTestCase(TestCase):
             text_hash
         )
 
+    def saveHash(self):
+        hash = Hash()
+        hash.text = 'hello'
+        hash.hash = '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824'
+        hash.save()
+        return hash
+
     def test_hash_object(self):
         '''
         Tests if a given Hash object is being properly saved to the database and
         if when retrieved it matches an specific hash and text.
         '''
-        hash = Hash()
-        hash.text = 'hello'
-        hash.hash = '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824'
-        hash.save()
+        hash = self.saveHash()
         pulled_hash = Hash.objects.get(text='hello')
         self.assertEqual(hash.hash, pulled_hash.hash)
 
@@ -80,9 +84,6 @@ class UnitTestCase(TestCase):
         Tests if the URL router is working properly and giving us back the original
         text associated in the database to the hash in the URL.
         '''
-        hash = Hash()
-        hash.text = 'hello'
-        hash.hash = '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824'
-        hash.save()
+        hash = self.saveHash()
         response = self.client.get('/hash/2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824')
         self.assertContains(response, 'hello')
