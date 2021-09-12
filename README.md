@@ -5,6 +5,8 @@ Exercice files of a Nick Walter's course explaining test-driven development with
 
 This web application generates a SHA256 hash from a text sent by the user and stores it in a SQLite3 database.
 
+**NOTE:** It is important to have the [geckodriver](https://github.com/mozilla/geckodriver/releases) inside of the `./venv/bin/` folder in order to run the Firefox 
+
 ## Learning objectives
 - TDD philosophy
 - Comparing functional and unit tests
