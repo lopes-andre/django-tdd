@@ -1,6 +1,7 @@
 from django.test import TestCase
 from selenium import webdriver
 from .forms import HashForm
+from .models import Hash
 import hashlib
 
 # class FunctionalTestCase(TestCase):
@@ -38,7 +39,7 @@ class UnitTestCase(TestCase):
 
     def test_home_template(self):
         '''
-        Test if the response to the root URL is being to
+        Tests if the response to the root URL is being to
         render the proper template.
         '''
         response = self.client.get('/')
@@ -46,7 +47,7 @@ class UnitTestCase(TestCase):
 
     def test_hash_form(self):
         '''
-        Test if the form is being loaded and if passing
+        Tests if the form is being loaded and if passing
         a string to the text area is valid.
         '''
         form = HashForm(data = { 'text': 'hello' })
@@ -54,10 +55,22 @@ class UnitTestCase(TestCase):
 
     def test_hash_works(self):
         '''
-        Test
+        Tests if the hashing function is working properly.
         '''
         text_hash = hashlib.sha256('hello'.encode('UTF-8')).hexdigest()
         self.assertEqual(
             '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824',
             text_hash
         )
+
+    def test_hash_object(self):
+        '''
+        Tests if a given Hash object is being properly saved to the database and
+        if when retrieved it matches an specific hash and text.
+        '''
+        hash = Hash()
+        hash.text = 'hello'
+        hash.hash = '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824'
+        hash.save()
+        pulled_hash = Hash.objects.get(text='hello')
+        self.assertEqual(hash.hash, pulled_hash.hash)
