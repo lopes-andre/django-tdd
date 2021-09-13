@@ -4,6 +4,7 @@ from selenium import webdriver
 from .forms import HashForm
 from .models import Hash
 import hashlib
+import time
 
 class FunctionalTestCase(TestCase):
 
@@ -46,9 +47,14 @@ class FunctionalTestCase(TestCase):
         self.assertRaises(ValidationError, badHash)
 
     def test_hash_ajax(self):
+        '''
+        Tests AJAX automatic response on the home page. Waits for 5 seconds
+        for the AJAX to run and update the home page.
+        '''
         self.browser.get('http://localhost:8000')
         text = self.browser.find_element_by_id('id_text')
         text.send_keys('hello')
+        time.sleep(5) # Waits 5 seconds for AJAX to run
         self.assertIn(
             '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824',
             self.browser.page_source
